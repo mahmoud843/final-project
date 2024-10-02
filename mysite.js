@@ -12,7 +12,7 @@ dark.onclick = function (){
         lol.style.filter = "none";
     }
 }
-// Create a "close" button and append it to each list item
+//  list 
 var myNodelist = document.getElementsByTagName("LI");
 var i;
 for (i = 0; i < myNodelist.length; i++) {
@@ -22,8 +22,6 @@ for (i = 0; i < myNodelist.length; i++) {
   span.appendChild(txt);
   myNodelist[i].appendChild(span);
 }
-
-// Click on a close button to hide the current list item
 var close = document.getElementsByClassName("close");
 var i;
 for (i = 0; i < close.length; i++) {
@@ -32,8 +30,6 @@ for (i = 0; i < close.length; i++) {
     div.style.display = "none";
   }
 }
-
-// Add a "checked" symbol when clicking on a list item
 var list = document.querySelector('ul');
 list.addEventListener('click', function(ev) {
   if (ev.target.tagName === 'LI') {
@@ -41,7 +37,7 @@ list.addEventListener('click', function(ev) {
   }
 }, false);
 
-// Create a new list item when clicking on the "Add" button
+// "Add" button list
 function newElement() {
   var li = document.createElement("li");
   var inputValue = document.getElementById("myInput").value;
@@ -223,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function playWithFriend(playerChoice, player) {
     if (player === 'player1') {
-        document.getElementById('player1-choice').innerText = `Player 1 has made a choice!`;
+        document.getElementById('player1-choice').innerText = `Player 1 has made his choice`;
         sessionStorage.setItem('player1Choice', playerChoice);
     } else if (player === 'player2') {
         document.getElementById('player2-choice').innerText = `Player 2 chose: ${playerChoice}`;
@@ -307,8 +303,17 @@ function handleRestartGame() {
 }
 
 document.querySelector('.game--restart').addEventListener('click', handleRestartGame);
+const followButtons = document.querySelectorAll('.follow-btn');
 
-  document.getElementById("followButton").addEventListener("click", function() {
-    this.textContent = "Followed";
-  });
+followButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        if (button.textContent === 'Follow') {
+            button.textContent = 'Followed';
+            button.classList.add('followed');
+        } else {
+            button.textContent = 'Follow';
+            button.classList.remove('followed');
+        }
+    });
+});
 
