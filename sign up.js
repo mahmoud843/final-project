@@ -1,6 +1,11 @@
 function SignupUser(event) {
     event.preventDefault(); 
 
+    const users = { 
+        "user1@gmail.com": { "password": "password1" },
+        "user2@gmail.com": { "password": "password2" }
+    };
+
     var username = document.getElementById("regUsername").value;
     var email = document.getElementById("regEmail").value;
     var password = document.getElementById("regPassword").value;
@@ -9,7 +14,7 @@ function SignupUser(event) {
     var programming = document.querySelector('input[name="programming"]:checked');
 
     if (username === "" || email === "" || password === "" || confirmPassword === "" || !gender || !programming) {
-        alert("Please fill in all fields and make sure to select your gender and programming knowledge level.");
+        alert("Please fill in all fields and select gender and programming knowledge level.");
         return false;
     }
 
@@ -18,12 +23,22 @@ function SignupUser(event) {
         return false;
     }
 
-    if (username && email && password && confirmPassword && gender && programming) {
-        if (password === confirmPassword) {          
-            document.getElementById('message').innerText = "Account created successfully.";
-            setTimeout(function() {
-                window.location.href = "html.html";
-            }, 1); 
-        }
+    if (!email.endsWith('@gmail.com')) {
+        document.getElementById('message').innerText = 'Error! Please enter a valid Gmail address';
+        return false;
     }
+
+    if (users[email]) {
+        alert("Email already exists. Please use a different email.");
+        return false;
+    }
+
+ 
+    users[email] = { "password": password };
+
+    document.getElementById('message').innerText = "Account created successfully.";
+
+    setTimeout(function() {
+        window.location.href = "html.html";
+    }, 1000); 
 }
