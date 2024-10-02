@@ -316,4 +316,66 @@ followButtons.forEach(button => {
         }
     });
 });
+document.getElementById('postForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
+
+    fetch('/api/posts', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, content }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('success:', data);
+        renderComments();
+    })
+    .catch((error) => {
+        console.error('error:', error);
+    });
+});
+
+function addComment() {
+    const commentInput = document.getElementById('commentInput');
+    const commentText = commentInput.value;
+    
+    if (commentText) {
+        
+        fetch('/api/comments', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ comment: commentText }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('posted:', data);
+            renderComments(); 
+            commentInput.value = ''; 
+        })
+        .catch((error) => {
+            console.error("error", error);
+        });
+    }
+}
+
+function renderComments() {
+    fetch('/api/comments')
+        .then(response => response.json())
+        .then(comments => {
+            const commentList = document.getElementById('commentList');
+            commentList.innerHTML = '';
+            comments.forEach(comment => {
+                const li = document.createElement('li');
+                li.textContent = comment; 
+                commentList.appendChild(li); 
+            });
+        });
+}
+window.onload = renderComments;
+nodeserver.js
