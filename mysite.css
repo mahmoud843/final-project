@@ -778,5 +778,19 @@ button {
         font-size: 1em;
         color: #333;
     }
-    
+
+.dark-mode .comment-section {
+    background-color: #333;
+    color: #fff;
+}
+
+.dark-mode .input2-container {
+    background-color: #333;
+}
+
+.dark-mode .input2
+ {
+    background-color: #444;
+    color: #fff;
+}
   
