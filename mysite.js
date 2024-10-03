@@ -316,35 +316,30 @@ followButtons.forEach(button => {
         }
     });
 });
-document.getElementById('postForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+const express = require('express');
+const app = express();
+app.use(express.json());
 
-    const title = document.getElementById('title').value;
-    const content = document.getElementById('content').value;
+let comments = [];
 
-    fetch('/api/posts', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title, content }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('success:', data);
-        renderComments();
-    })
-    .catch((error) => {
-        console.error('error:', error);
-    });
+app.post('/api/comments', (req, res) => {
+    const newComment = req.body.comment;
+    comments.unshift(newComment); // Add the new comment to the beginning of the array
+    res.status(201).json({ message: 'Comment added successfully' });
 });
 
+app.get('/api/comments', (req, res) => {
+    res.json(comments);
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
 function addComment() {
     const commentInput = document.getElementById('commentInput');
     const commentText = commentInput.value;
-    
+
     if (commentText) {
-        
         fetch('/api/comments', {
             method: 'POST',
             headers: {
@@ -352,30 +347,19 @@ function addComment() {
             },
             body: JSON.stringify({ comment: commentText }),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('posted:', data);
-            renderComments(); 
-            commentInput.value = ''; 
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Failed to add comment');
         })
-        .catch((error) => {
-            console.error("error", error);
+        .then(data => {
+            console.log('Comment added:', data);
+            renderComments();
+            commentInput.value = '';
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
     }
 }
-
-function renderComments() {
-    fetch('/api/comments')
-        .then(response => response.json())
-        .then(comments => {
-            const commentList = document.getElementById('commentList');
-            commentList.innerHTML = '';
-            comments.forEach(comment => {
-                const li = document.createElement('li');
-                li.textContent = comment; 
-                commentList.appendChild(li); 
-            });
-        });
-}
-window.onload = renderComments;
-nodeserver.js
