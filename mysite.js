@@ -363,3 +363,21 @@ function addComment() {
         });
     }
 }
+var darkButton = document.getElementById("clicked");
+var elementsToChangeColor = document.querySelectorAll(".changeable-color");
+
+darkButton.onclick = function() {
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+        elementsToChangeColor.forEach(element => {
+            element.style.color = "var(--font-color)";
+            element.style.backgroundColor = "var(--background-color)";
+        });
+    } else {
+        elementsToChangeColor.forEach(element => {
+            element.style.color = "var(--secod-font-color)";
+            element.style.backgroundColor = "var(--background-on-hover)";
+        });
+    }
+};
