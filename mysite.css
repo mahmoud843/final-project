@@ -837,6 +837,9 @@ button {
 .languages-bar li .close {
     display: none !important;
 }
+.languages-bar li .close {
+    display: none !important;
+}
 .languages-bar ul {
     list-style: none;
     margin: 0;
@@ -910,3 +913,4 @@ button {
 #communitiesSection {
     position: relative;
 }
+
